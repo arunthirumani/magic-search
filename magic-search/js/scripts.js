@@ -1,46 +1,31 @@
+$("document").ready(function(){
 
-$(document).ready(function(){
+var getContacts=function(){
+var cnt=$('#contact').val();
+if(cnt=='')
+{
+console.log("inside the function");
+$('#results').html("<h2 class='loading'>Dude!!Enter some text in the text box!</h2>");
+}
+else
+{
+$.getJSON("https://api.twitter.com/1.1/users/search.json?oauth_token=1593548364-FcNZI2HtXGpHHK6xUG38NI622yJkMHNaVUvda0H&q=Twitter%20API&page=1&count=3",
 
-   $('#term').focus(function(){
-      var full = $("#poster").has("img").length ? true : false;
-      if(full == false){
-         $('#poster').empty();
-      }
-   });
+function(data){
 
-   var getPoster = function(){
+for (i=0; i<data.results.length; i++){
 
-        var film = $('#term').val();
+$("#results").append("<p><strong>Text: </strong>" + data.results[i].text + "<BR/>" + "<p><strong>Created at: </strong>" + data.results[i].created_at +"</p><br /><br />");
 
-         if(film == ''){
+}
+});
+}
+}
 
-            $('#poster').html("<h2 class='loading'>Ha! We haven't forgotten to validate the form! Please enter something.</h2>");
-
-         } else {
-
-            $('#poster').html("<h2 class='loading'>Your poster is on its way!</h2>");
-
-            $.getJSON("http://api.themoviedb.org/2.1/Movie.search/en/json/23afca60ebf72f8d88cdcae2c4f31866/" + film + "?callback=?", function(json) {
-               if (json != "Nothing found."){
-                     $('#poster').html('<h2 class="loading">Well, gee whiz! We found you a poster, skip!</h2><img id="thePoster" src=' + json[0].posters[0].image.url + ' />');
-                  } else {
-                     $.getJSON("http://api.themoviedb.org/2.1/Movie.search/en/json/23afca60ebf72f8d88cdcae2c4f31866/goonies?callback=?", function(json) {
-                        console.log(json);
-                        $('#poster').html('<h2 class="loading">Were afraid nothing was found for that search. Perhaps you were looking for The Goonies?</h2><img id="thePoster" src=' + json[0].posters[0].image.url + ' />');
-                     });
-                  }
-             });
-
-          }
-
-        return false;
-   }
-
-   $('#search').click(getPoster);
-   $('#term').keyup(function(event){
+$('#search').click(getContacts);
+   $('#contact').keyup(function(event){
        if(event.keyCode == 13){
-           getPoster();
+           getContacts();
        }
    });
-
 });
