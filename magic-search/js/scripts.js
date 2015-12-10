@@ -19,7 +19,6 @@ $('#results').empty();
 for (i=1; i<data.items.length; i++){	
 
 $("#results").append('<h2 class="loading">Images from google+</h2><img width="10%" id="thePoster" src="' + data.items[i].image.url +'"/>');
-
 }
 });
 }
